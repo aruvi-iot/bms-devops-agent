@@ -1,10 +1,8 @@
 @"
 .venv/
-__pycache__/
-*.py[cod]
 *.egg-info/
+__pycache__/
 .pytest_cache/
-.ruff_cache/
 .env
 logs/
-"@ | Out-File -Encoding utf8 .gitignore
+"@ | Set-Content .gitignore
