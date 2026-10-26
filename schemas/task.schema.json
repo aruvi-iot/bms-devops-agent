@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/bms-devops-agent/task.schema.json",
+  "title": "BMS DevOps Agent task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["task_id", "engineering_state", "repo_root", "source_revision", "configuration_id", "artifacts", "expected_artifact_hashes", "approvals"],
+  "properties": {
+    "task_id": {"type": "string", "minLength": 1},
+    "engineering_state": {"enum": ["S5", "S6", "S7", "S8"]},
+    "repo_root": {"type": "string", "minLength": 1},
+    "source_revision": {"type": "string", "minLength": 7},
+    "requirement_set_version": {"type": "string", "minLength": 1},
+    "configuration_id": {"type": "string", "pattern": "^CFG-[A-Za-z0-9._-]+$"},
+    "artifacts": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "output_artifacts": {"type": "array", "items": {"type": "string", "minLength": 1}},
+    "expected_artifact_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+    "expected_output_hashes": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"}},
+    "configuration": {"type": "object"},
+    "validation_status": {"const": "not_performed"},
+    "validation_passed": {"type": "boolean"},
+    "compliance_blocked": {"type": "boolean"},
+    "approvals": {
+      "type": "object",
+      "properties": {
+        "code_generation": {"$ref": "#/$defs/approval"},
+        "configuration": {"$ref": "#/$defs/approval"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approval_id", "actor", "role", "approved_at", "scope"],
+      "properties": {
+        "approval_id": {"type": "string", "minLength": 1},
+        "actor": {"type": "string", "minLength": 1},
+        "role": {"type": "string", "minLength": 1},
+        "approved_at": {"type": "string", "format": "date-time"},
+        "scope": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

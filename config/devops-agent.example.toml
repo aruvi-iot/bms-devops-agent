@@ -1,0 +1,38 @@
+[agent]
+name = "@BMS-SOC-DevOps-Agent"
+plan_only_by_default = true
+evidence_dir = "./evidence"
+audit_file = "./evidence/audit.jsonl"
+command_timeout_seconds = 1800
+max_log_bytes = 200000
+
+[runner]
+# Deliberately disabled until DA-OI-02 and DA-OI-06 are resolved.
+enabled = false
+provider = "unselected" # gitlab-ci | github-actions | jenkins | approved-local
+
+[toolchain]
+# Replace with the products, versions, and license records actually installed.
+status = "unresolved-da-oi-01-da-oi-02"
+matlab = ""
+simulink = ""
+embedded_coder = ""
+git = ""
+
+[checks]
+# Configure these with the approved CI/toolchain procedures. Each value is an
+# argv array (never a shell string). Empty arrays block execution.
+source = []
+static = []
+model = []
+unit_quality_gate = [] # Configure only after DA-OI-07; these are not Unit evidence.
+dependency_toolchain = []
+integration_smoke = [] # Must not invoke Unit/MIL/SIL validation.
+
+[build]
+sil = [] # Example after approval: ["matlab", "-batch", "runApprovedSilBuild"]
+
+[policy]
+# Retry remains disabled pending DA-OI-04. The POC implementation fails closed.
+retry_enabled = false
+require_codegen_approval_for_s6 = true

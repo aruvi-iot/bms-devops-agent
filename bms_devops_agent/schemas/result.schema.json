@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BMS DevOps Agent result",
+  "type": "object",
+  "required": ["task", "config", "run_id", "execute", "stage_results", "build_status", "validation_status", "configuration_hash", "evidence_path"],
+  "properties": {
+    "task": {"type": "object"},
+    "config": {"type": "object"},
+    "run_id": {"type": "string", "minLength": 1},
+    "execute": {"type": "boolean"},
+    "stage_results": {"type": "object", "additionalProperties": {"type": "object", "required": ["status"], "properties": {"status": {"type": "string"}}}},
+    "build_status": {"enum": ["blocked", "failed", "planned", "passed", "recorded", "checks_passed"]},
+    "validation_status": {"const": "not_performed"},
+    "configuration_hash": {"type": "string", "pattern": "^[a-fA-F0-9]{64}$"},
+    "evidence_path": {"type": "string", "minLength": 1}
+  }
+}
